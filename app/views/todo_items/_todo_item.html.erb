@@ -13,6 +13,7 @@
         <i class="fa fa-trash"></i>
       <% end %>
     </div>
+
   <% else %>
     <div class="complete">
       <%= link_to complete_todo_list_todo_item_path(@todo_list, todo_item.id), method: :patch do %>
