@@ -1,5 +1,6 @@
 class TodoItemsController < ApplicationController
   before_action :set_todo_list
+  before_action :set_todo_item, except: [:create]
 
   def create
     @todo_item = @todo_list.todo_items.create(todo_item_params)
@@ -8,7 +9,6 @@ class TodoItemsController < ApplicationController
   end
 
   def destroy
-    @todo_item = @todo_list.todo_items.find(params[:id])
     if @todo_item.destroy
       flash[:success] = "To do item was deleted."
     else
@@ -17,9 +17,18 @@ class TodoItemsController < ApplicationController
     redirect_to @todo_list
   end
 
+  def complete
+    @todo_item.update_attribute(:completed_at, Time.now)
+    redirect_to @todo_list, notice: "To do item completed."
+  end
+
   private
     def set_todo_list
     @todo_list = Todo_list.find(params[:todo_list_id])
+    end
+
+    def set_todo_item
+      @todo_item = @todo_list.todo_items.find(params[:id])
     end
 
     def todo_item_params
